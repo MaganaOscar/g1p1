@@ -60,8 +60,10 @@ public class EmployeeImbursementMgmtDriver {
 			if (user == null) {
 				ctx.status(400);
 			} else {
+				user.setPassword(null);
 				ctx.sessionAttribute("emp_id", user.getEmp_id());
 				int s = ctx.sessionAttribute("emp_id");
+				Integer emp_id = user.getEmp_id();
 				System.out.println(s);
 				ctx.json(user);
 			}
