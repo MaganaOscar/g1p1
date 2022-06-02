@@ -14,7 +14,7 @@ public class EmployeeImbursementMgmtDriver {
 
 		MainService mainServ = new MainServiceImpl();
 		
-		Javalin server = Javalin.create();
+		Javalin server = Javalin.create((config) -> config.enableCorsForAllOrigins());
 		server.start(7474);
 		
 		//get all requests by status
