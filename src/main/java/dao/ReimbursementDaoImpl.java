@@ -7,12 +7,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import exception.ApplicationException;
 import model.ReimbursementPojo;
+import service.MainServiceImpl;
 
 public class ReimbursementDaoImpl implements ReimbursementDao {
+	
+	private static final Logger LOG = LogManager.getLogger(ReimbursementDaoImpl.class);
 
 	@Override
 	public List<ReimbursementPojo> getAllRequests(String status) {
+		LOG.info("Enter getAllRequests() in ReimbursementDaoImpl...");
 		try {
 			List<ReimbursementPojo> reimbursements = new ArrayList<ReimbursementPojo>();
 			Connection conn = DBUtil.makeConnection();
@@ -24,7 +32,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 				reimbursements.add(new ReimbursementPojo(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3),
 						resultSet.getTimestamp(4), resultSet.getInt(5)));
 			}
-			
+			LOG.info("Exited getAllRequests() in ReimbursementDaoImpl...");
 			return reimbursements;
 			
 		} catch(SQLException e) {
@@ -34,7 +42,8 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	}
 
 	@Override
-	public List<ReimbursementPojo> getEmployeeRequests(int emp_id) {
+	public List<ReimbursementPojo> getEmployeeRequests(int emp_id) throws ApplicationException {
+		LOG.info("Enter getEmployeeRequests() in ReimbursementDaoImpl...");
 		try {
 			List<ReimbursementPojo> reimbursements = new ArrayList<ReimbursementPojo>();
 			Connection conn = DBUtil.makeConnection();
@@ -46,45 +55,47 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 				reimbursements.add(new ReimbursementPojo(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3),
 						resultSet.getTimestamp(4), resultSet.getInt(5)));
 			}
-			
+			LOG.info("Exited getEmployeeRequests() in ReimbursementDaoImpl...");
 			return reimbursements;
 			
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new ApplicationException(e.getMessage());
 		}
 	}
 
 	@Override
-	public boolean updateRequest(int rb_id, String newStatus) {
+	public boolean updateRequest(int rb_id, String newStatus) throws ApplicationException{
+		LOG.info("Enter updateRequest() in ReimbursementDaoImpl...");
 		try {
 			Connection conn = DBUtil.makeConnection();
 			Statement stmt = conn.createStatement();
 			String query = "UPDATE reimbursement_details SET rb_status = '" + newStatus + "' WHERE rb_id = " + rb_id +";";
+			LOG.info("Exited updateRequest() in ReimbursementDaoImpl...");
 			return stmt.executeUpdate(query) == 1;
 			
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new ApplicationException(e.getMessage());
 		}
 	}
 
 	@Override
-	public boolean submitRequest(int emp_id, double amount) {
+	public boolean submitRequest(int emp_id, double amount) throws ApplicationException{
+		LOG.info("Enter submitRequest() in ReimbursementDaoImpl...");
 		try {
 			Connection conn = DBUtil.makeConnection();
 			Statement stmt = conn.createStatement();
 			String query = "INSERT INTO reimbursement_details(rb_status, rb_amount, rb_timestamp, emp_id) "
 					+ "VALUES ('pending', " + amount + ", current_timestamp, " + emp_id + ");";
+			LOG.info("Exited submitRequest() in ReimbursementDaoImpl...");
 			return stmt.executeUpdate(query) == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new ApplicationException(e.getMessage());
 		}
 	}
 
 	@Override
-	public List<ReimbursementPojo> viewMyRequests(int emp_id, String status) {
+	public List<ReimbursementPojo> viewMyRequests(int emp_id, String status) throws ApplicationException{
+		LOG.info("Enter viewMyRequests() in ReimbursementDaoImpl...");
 		try {
 			List<ReimbursementPojo> requests = new ArrayList<ReimbursementPojo>();
 			Connection conn = DBUtil.makeConnection();
@@ -96,10 +107,11 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 				requests.add(new ReimbursementPojo(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3),
 						resultSet.getTimestamp(4), resultSet.getInt(5)));
 			}
+			LOG.info("Exited viewMyRequests() in ReimbursementDaoImpl...");
 			return requests;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new ApplicationException(e.getMessage());
+			
 		}
 	}
 
