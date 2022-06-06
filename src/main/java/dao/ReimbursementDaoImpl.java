@@ -19,7 +19,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	private static final Logger LOG = LogManager.getLogger(ReimbursementDaoImpl.class);
 
 	@Override
-	public List<ReimbursementPojo> getAllRequests(String status) {
+	public List<ReimbursementPojo> getAllRequests(String status) throws ApplicationException{
 		LOG.info("Enter getAllRequests() in ReimbursementDaoImpl...");
 		try {
 			List<ReimbursementPojo> reimbursements = new ArrayList<ReimbursementPojo>();
@@ -36,8 +36,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 			return reimbursements;
 			
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new ApplicationException(e.getMessage());
 		}
 	}
 
