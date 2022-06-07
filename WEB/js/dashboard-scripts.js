@@ -457,7 +457,7 @@ class DashboardEvents {
 
                 // provide user feedback
                 $('#employeeModal').css("display", "none");
-                this.buildEmployeeInfoHTML(emp);
+                //this.buildEmployeeInfoHTML(emp);
                 $('#flashMsg').html(                    
                     `<div class="alert alert-success" role="alert">
                         Update Successful!
@@ -469,6 +469,7 @@ class DashboardEvents {
                   opacity: '0',
                   height: '0',
                 }, 8000);
+                location.reload();
             }
         } catch (error) {
             console.error(error.message);
@@ -680,10 +681,15 @@ window.onload = () => {
         
     });
 
+
     $('#requestBtn').click(() => dashboard.requestReimbursement(employee.emp_id));
 
     // initialize submit event for editing employee info
-    $('#employeeInfoForm').submit(dashboard.updateEmployeeInfo);
+    $('#employeeInfoForm').submit((event) => { 
+        dashboard.updateEmployeeInfo(event);
+        const emp = JSON.parse(sessionStorage.getItem("authenticated"));
+        dashboard.buildEmployeeInfoHTML(emp);
+    });
 
     $('#reqAll').click(() => dashboard.getAllReq(employee.job_code));
     $('#reqRejected').click(() => dashboard.getRejectedReimbursements(employee.job_code));
