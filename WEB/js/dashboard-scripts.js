@@ -202,11 +202,13 @@ class DashboardEvents {
             if (job_code == 100) {
                 html +=`
                     <div class="d-flex align-items-center justify-content-between">
-                        <h4 class="small font-weight-bold">Date: ${dateFormat}</h4>
-                        <button class="btn btn-primary btn-sm" id="rb_${item.rb_id}" 
+                        <h4 class="small font-weight-bold">Date: ${dateFormat}</h4>`;
+                if (item.rb_status === "pending") {
+                    html += `<button class="btn btn-primary btn-sm" id="rb_${item.rb_id}" 
                         onclick="DashboardEvents.updateRequest(event)"
-                        >Update</button>
-                    </div>
+                        >Update</button>`;
+                    }
+                html += ` </div>
                 </div>
                 <div class="dropdown-divider"></div>
                 `;
@@ -214,17 +216,21 @@ class DashboardEvents {
                 //display for managers
                 html +=`
                     <div class="d-flex align-items-center justify-content-between">
-                        <h4 class="small font-weight-bold">Date: ${dateFormat}</h4>
-                        <button type="button" class="btn btn-danger btn-sm" 
-                        onclick="DashboardEvents.updateRequestStatus(event)"
-                        id="rejected_${item.rb_id}">Reject</button>
-                        <button type="button" class="btn btn-success btn-sm" 
-                        onclick="DashboardEvents.updateRequestStatus(event)"
-                        id="resolved_${item.rb_id}">Resolve</button>
+                        <h4 class="small font-weight-bold">Date: ${dateFormat}</h4>`;
+
+                if (item.rb_status === "pending"){
+                    html += 
+                        `<button type="button" class="btn btn-danger btn-sm" 
+                            onclick="DashboardEvents.updateRequestStatus(event)"
+                            id="rejected_${item.rb_id}">Reject</button>
+                            <button type="button" class="btn btn-success btn-sm" 
+                            onclick="DashboardEvents.updateRequestStatus(event)"
+                            id="resolved_${item.rb_id}">Resolve</button>
+                        </div>
                     </div>
-                </div>
-                <div class="dropdown-divider"></div>
-                `;
+                    <div class="dropdown-divider"></div>
+                    `;
+                }
             }
                 
 
