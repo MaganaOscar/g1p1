@@ -48,17 +48,24 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public boolean updateEmployee(int emp_id, int changeColumn, String newInfo) throws ApplicationException{
+	public EmployeePojo updateEmployee(int emp_id, String fname, String lname, String email) throws ApplicationException{
 		LOG.info("Entered updateEmployee() in service.");
 		LOG.info("Exited updateEmployee() in service.");
-		return employeeDao.updateEmployee(emp_id, changeColumn, newInfo);
+		return employeeDao.updateEmployee(emp_id, fname, lname, email);
+	}
+	
+	@Override
+	public List<ReimbursementPojo> getAllRequests() throws ApplicationException {
+		LOG.info("Entered getAllRequests() in service.");
+		LOG.info("Exited getAllRequests() in service.");
+		return reimbursementDao.getAllRequests();
 	}
 
 	@Override
-	public List<ReimbursementPojo> getAllRequests(String status) throws ApplicationException{
-		LOG.info("Entered getAllRequests() in service.");
-		LOG.info("Exited getAllRequests() in service.");
-		return reimbursementDao.getAllRequests(status);
+	public List<ReimbursementPojo> getAllRequestsByStatus(String status) throws ApplicationException{
+		LOG.info("Entered getAllRequestsByStatus() in service.");
+		LOG.info("Exited getAllRequestsByStatus() in service.");
+		return reimbursementDao.getAllRequestsByStatus(status);
 	}
 
 	@Override
@@ -69,10 +76,17 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public boolean updateRequest(int rb_id, String newStatus) throws ApplicationException{
-		LOG.info("Entered updateRequest() in service.");
-		LOG.info("Exited updateRequest() in service.");
-		return reimbursementDao.updateRequest(rb_id, newStatus);
+	public boolean updateRequestStatus(int rb_id, String newStatus) throws ApplicationException{
+		LOG.info("Entered updateRequestStatus() in service.");
+		LOG.info("Exited updateRequestStatus() in service.");
+		return reimbursementDao.updateRequestStatus(rb_id, newStatus);
+	}
+	
+	@Override
+	public boolean updateRequestDetail(int rb_id, double newAmount) throws ApplicationException{
+		LOG.info("Entered updateRequestDetail() in service.");
+		LOG.info("Exited updateRequestDetail() in service.");
+		return reimbursementDao.updateRequestDetail(rb_id, newAmount);
 	}
 
 	@Override
@@ -95,5 +109,6 @@ public class MainServiceImpl implements MainService {
 		LOG.info("Exited getAllEmployees() in service.");
 		return employeeDao.getAllEmployees();
 	}
+
 
 }

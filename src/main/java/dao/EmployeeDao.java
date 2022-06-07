@@ -15,5 +15,5 @@ public interface EmployeeDao {
 
 	List<EmployeePojo> getAllEmployees() throws ApplicationException;
 
-	boolean updateEmployee(int emp_id, int changeColumn, String newInfo) throws ApplicationException;
+	EmployeePojo updateEmployee(int emp_id, String fname, String lname, String email) throws ApplicationException;
 }
